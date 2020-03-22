@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Appiness</string>
+    <string name="search_title">Search Title</string>
+    <string name="backed_by">Backed By :</string>
+    <string name="backers">backers</string>
+    <string name="by">By :</string>
+    <string name="no_internet">No Internet</string>
 </resources>

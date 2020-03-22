@@ -3,12 +3,14 @@ package com.test.nigam.appiness.view
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.test.nigam.appiness.R
 import com.test.nigam.appiness.databinding.ActivityMainBinding
+import com.test.nigam.appiness.utils.Utility
 import com.test.nigam.appiness.viewmodel.DataViewModel
 
 
@@ -30,14 +32,21 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         viewModel.liveData.observe(this, Observer {
             adapter.setData(it)
         })
-        viewModel.getData()
+        if (Utility.isNetworkAvailable(this)) {
+            viewModel.getData()
+        } else {
+            AlertDialog.Builder(this).setMessage(R.string.no_internet)
+                .setPositiveButton(android.R.string.ok) { _, _ ->
+                    finish()
+                }.create().show()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.search_menu, menu)
         val searchItem: MenuItem = menu!!.findItem(R.id.menu_toolbarsearch)
         val searchView: SearchView = searchItem.actionView as SearchView
-        searchView.queryHint = "Search Title"
+        searchView.queryHint = getString(R.string.search_title)
         searchView.setOnQueryTextListener(this)
         searchView.isIconified = true
         return true
